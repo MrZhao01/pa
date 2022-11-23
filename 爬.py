@@ -3,12 +3,12 @@ import requests
 from selenium import webdriver
 
 
-#      登录后台
-def login(account, base64_pwd, code):
+# 登录后台
+def login(account, base64_pwd, code, cookie):
     login_url = 'http://jwgl.thxy.cn/login!doLogin.action'
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.52",
-        'cookie': 'JSESSIONID=AFC1403F9833921F397DA5372ADD75FE; browserID=2040450018'
+        'cookie': cookie
     }
     data = {
         "account": account,
@@ -21,21 +21,35 @@ def login(account, base64_pwd, code):
         fp.write(content)
 
 
-#     用户填写账号密码
+# 动态cookie获取
+def getCookie():
+    browser = webdriver.Chrome()
+    browser.get('http://jwgl.thxy.cn/')
+    Cookie = browser.get_cookies()
+    cookie = ''
+    for c in Cookie:
+        cookie += c['name']
+        cookie += '='
+        cookie += c['value']
+        cookie += ';'
+    return cookie
+
+
+# 用户填写账号密码
 def usermessage():
     account = input('请输入你的学号：')
     pwd = bytes(input('请输入你的密码：'), encoding='utf-8')
     base64_pwd = str(base64.b64encode(pwd))
-    base64_pwd = base64_pwd[2:-1]+'=='
+    base64_pwd = base64_pwd[2:-1] + '=='
     return account, base64_pwd
 
 
 # 验证码照片获取
-def page_code():
+def page_code(cookie):
     url = 'http://jwgl.thxy.cn/yzm'
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.52",
-        'cookie': 'JSESSIONID=AFC1403F9833921F397DA5372ADD75FE; browserID=2040450018'
+        'cookie': cookie
     }
     # 转换时间戳
     import time
@@ -119,10 +133,10 @@ def chaojiying():
         return code
         # print chaojiying.PostPic(base64_str, 1902)  #此处为传入 base64代码
 
-
+# 主入口
 if __name__ == '__main__':
     account, base64_pwd = usermessage()
-    page_code()
+    cookie = getCookie()
+    page_code(cookie)
     code = chaojiying()
-    login(account, base64_pwd, code)
-
+    login(account, base64_pwd, code, cookie)
