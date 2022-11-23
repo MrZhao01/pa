@@ -1,19 +1,18 @@
 import base64
-
 import requests
 from selenium import webdriver
 
 
 #      登录后台
-def login(account, pwd, code):
+def login(account, base64_pwd, code):
     login_url = 'http://jwgl.thxy.cn/login!doLogin.action'
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.52",
-        'cookie': 'JSESSIONID=0BF243207DAAF6FD546D468E1FE872BB; browserID=2999282456'
+        'cookie': 'JSESSIONID=AFC1403F9833921F397DA5372ADD75FE; browserID=2040450018'
     }
     data = {
         "account": account,
-        "pwd": pwd,
+        "pwd": base64_pwd,
         "verifycode": code
     }
     response = requests.post(login_url, data=data, headers=headers)
@@ -24,10 +23,11 @@ def login(account, pwd, code):
 
 #     用户填写账号密码
 def usermessage():
-    account = int(input('请输入你的学号：'))
-    pwd = input('请输入你的密码：')
-
-    return account, pwd
+    account = input('请输入你的学号：')
+    pwd = bytes(input('请输入你的密码：'), encoding='utf-8')
+    base64_pwd = str(base64.b64encode(pwd))
+    base64_pwd = base64_pwd[2:-1]+'=='
+    return account, base64_pwd
 
 
 # 验证码照片获取
@@ -35,7 +35,7 @@ def page_code():
     url = 'http://jwgl.thxy.cn/yzm'
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.52",
-        'cookie': 'JSESSIONID=0BF243207DAAF6FD546D468E1FE872BB; browserID=2999282456'
+        'cookie': 'JSESSIONID=AFC1403F9833921F397DA5372ADD75FE; browserID=2040450018'
     }
     # 转换时间戳
     import time
@@ -121,10 +121,8 @@ def chaojiying():
 
 
 if __name__ == '__main__':
-    # account, pwd = usermessage()
-    # page_code()
-    # code = chaojiying()
-    # login(account, pwd, code)
-    pwd = bytes('zyq030909')
-    base64_pwd = str(base64.b64encode(pwd),'utf-8')
-    print(base64_pwd)
+    account, base64_pwd = usermessage()
+    page_code()
+    code = chaojiying()
+    login(account, base64_pwd, code)
+
