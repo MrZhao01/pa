@@ -1,0 +1,279 @@
+
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<title>教学管理系统</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta name="renderer" content="webkit">
+<link rel="shortcut icon" href="/favicon.ico" /> 
+<link rel="stylesheet" type="text/css" href="/styles/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/styles/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="/styles/themes/js_input.css">
+<link rel="stylesheet" href="/styles/js/poshytip-1.2/tip-yellowsimple/tip-yellowsimple.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="/styles/themes/main.css">
+<script type="text/javascript" src="/styles/js/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="/styles/js/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/styles/js/jquery.parser.js"></script>
+<script type="text/javascript" src="/styles/js/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="/styles/layer/layer.min.js"></script>
+<script type="text/javascript" src="/styles/js/ntss.js?v=20180126"></script>
+<script type="text/javascript" src="/styles/js/js_input.js"></script>
+<script type="text/javascript" src="/styles/js/poshytip-1.2/jquery.poshytip.min.js"></script>
+<script type="text/javascript" src="/styles/js/entss.js"></script>
+<script type="text/javascript" src="/styles/js/underscore-min.js"></script>
+<script type="text/javascript" src="/styles/js/easyui-component.js?v=20180227"></script>
+
+<link rel="stylesheet" href="/styles/css/default.css" type="text/css" />
+<link rel="stylesheet" href="/styles/css/font-awesome.min.css" type="text/css" />
+<script type="text/javascript" src="/styles/js/default.js"></script> 
+</head>
+<body class="easyui-layout" id='mainlayout' >
+<div data-options="region:'north',border:false" style="height:60px;padding:0px;overflow-y:hidden;">
+		<div id='logo' style='width:285px;height:60px;background:url(/styles/images/customize/logo_school.png) no-repeat left top;float:left;'></div>
+		<div style='width:20%;height:60px;float:left' class="infoDiv">
+			<div style="width:100%;height:35px; text-align:left;line-height:35px;padding-left:5px;">赵育祺
+			
+					
+					
+						
+						
+							&nbsp;&nbsp;&nbsp;&nbsp;
+							| <a href="javascript:;" onclick="changeBb('old');">回到旧版</a>
+						
+					
+			</div>
+			<div style="width:100%;height:25px;"><a href="javascript:void(0)" onclick="changepw(true)">修改密码</a> | <a href="javascript:void(0)" onclick="setPageSize()">设置</a> | <a onclick="lock()" href="javascript:void(0)">锁定</a>
+					| <a href="javascript:logout();">注销</a>  <!--  <a href="javascript:closeWindow();">退出</a>-->
+			</div>
+		</div>
+		<div id='topbg' style='width:550px;height:60px;float:right;background:url(/styles/images/customize/top_bg.jpg) no-repeat right top;'>
+			<div style="width:80px;height:25px;float:right; padding-top:5px;text-align:right;line-height:25px;">
+<!-- 				<span class="addrtitle"></span> -->
+			</div>
+			<div id='m1_container' style="width:350px;height:20px;float:left;margin:35px 0 0 20px;">
+			</div>
+			<div id='search_container'>
+				<input id="searchMenu" name="searchMenu" >
+			</div>
+	   </div>
+	   <div id="dlgDiv" style=''></div>
+</div>
+<div data-options="region:'west',title:'教务管理系统',id:'west',collapsed:true" style="width:130px;padding:0px;overflow:hidden;">
+	<div class="m2_container" id='m2_container' ></div>
+</div>
+<!--  <div data-options="region:'east',collapsed:true,title:'快捷菜单',onCollapse:rightCollapse,onExpand:rightExpand,id:'east'" style="width:100px;padding:10px;"></div>-->
+<!-- <div data-options="region:'center',href:'desktop!showDesktop.action',id:'desktop'"></div> -->
+
+    <div data-options="region: 'center'" >
+	    <div id="mainTabs_tools" class="tabs-tool">
+	        <table>
+	            <tr>
+	                <td><a id="mainTabs_closeTab" class="easyui-linkbutton easyui-tooltip" title="关闭所有选项卡" data-options="plain: true, iconCls: 'icon-trash'"></a></td>
+	                <td><div class="datagrid-btn-separator"></div></td>
+	                <td>
+	                	<a id="mainTabs_fullScreen" class="easyui-linkbutton easyui-tooltip" title="全屏" data-options="plain: true, iconCls: 'icon-fullscreen'"></a>
+	                	<a id="mainTabs_escScreen" class="easyui-linkbutton easyui-tooltip" title="退出全屏" data-options="plain: true, iconCls: 'icon-escscreen'" style="display:none"></a>
+	                </td>
+	            </tr>
+	        </table>
+	    </div>
+        <div id="nav_tab" class="easyui-tabs" data-options="fit: true, border: false, showOption: true, enableNewTabMenu: true, tools: '#mainTabs_tools', enableJumpTabMenu: true">
+        </div>
+    </div>
+
+<!-- <div data-options="region:'south',border:false" style="height:25px;background:#F3F8FE;padding:5px;text-align:center">版权所有：广州丛师科技有限公司 </div> -->
+
+	
+	
+
+</body>
+<script language="JavaScript" type="text/javascript">
+    var posX;
+    var posY;
+
+    whereAmI = function() {
+        console.info(posX+":"+posY);
+    }
+
+    document.onmousemove = function(evt) {
+        if (typeof evt == 'undefined') {
+            myEvent = window.event;
+        } else {
+            myEvent = evt;
+        }
+        posX = myEvent.pageX;
+        posY = myEvent.pageY;
+    }
+
+    window.onbeforeunload = function() {
+        whereAmI();
+    }
+$(document).ready(function(){
+	//添加我的桌面
+		
+			
+			  //启用新版界面
+    			addTab('我的桌面','desktop!newDesktop.action',false);
+			
+		
+
+    loadLeftMenu();
+//	$.post("default!getMenu.action",
+//			function(result){
+//				var m2str ='';
+//				var menu1 = [];
+//				var menu2 = [];
+//				var menu3 = [];
+//				$.each(result,function(i,item){
+//					if(item.menulevel =='1' ){//填充一级菜单
+//						menu1.push(item);return true;
+//					}
+//					if(item.menulevel =='2' ){//填充二级菜单
+//						menu2.push(item);return true;
+//					}
+//					if(item.menulevel =='3' ){//填充三级菜单
+//						menu3.push(item);return true;
+//					}
+//				});
+//
+//				$.each(menu1,function(i,item){//填充一级菜单
+//						//构建一级菜单,同时符合下拉菜单要求
+//						$("#m1_container").prepend("<a href='javascript:void(0)' id='sm"+i+"'  onclick=selectedM1('"+item.menuid+"','"+item.menuname+"')>"+item.menuname+"</a>");
+//						var isdisplay = (item.menuid == '0')?'block':'none';//设定默认显示一级菜单id
+//						m2str += "<div id='"+item.menuid+"' style='display:"+isdisplay+";'><table style='border-collapse:collapse; width:100%'>";//构建左菜单
+//						var sm2 = $("<div id='mm"+i+"' style='width:150px;'></div>");//构建下拉菜单
+//						$.each(menu2,function(j,item2){//遍历取出二级菜单
+//                            if(item2.parentid == item.menuid){
+//                            	//二级左菜单字符串
+//                                m2str += "<tr><td class='c2' onClick=selectedM2('"+item2.menuid+"')><i class='fa fa-list' aria-hidden='true'></i>&nbsp;"+item2.menuname+"</td></tr><tr><td style=''><div id='"+item2.menuid+"' class='m2' style='display:"+isdisplay+";'><table>";
+//                                sm2.append("<div class='menu-sep'></div>");//加入二级下拉菜单
+//                                var sm3str = "<div><span>"+item2.menuname+"</span><div style='width:150px;'>";//构建三级下拉字符串
+//                                $.each(menu3, function(k,item3){//遍历取出三级菜单
+//                                    if(item3.parentid == item2.menuid){
+//	                                    m2str +="<tr align='left' width='100%'><td class='c3' onClick=selectedM3(this,'"+item3.menuurl+"','"+item3.menuname+"') ><i class='fa fa-"+item3.menupic+"' aria-hidden='true'></i>"+item3.menuname+"</td></tr>";//三级左菜单字符串
+//	                                    sm3str +="<div icon='icon-undo' onClick=selectedM3('','"+item3.menuurl+"','"+item3.menuname+"')>"+item3.menuname+"</div>";//三级下拉菜单字符串
+//                                    }//取出三级菜单
+//                                })
+//                                m2str +="</table></div></td></tr>";
+//                                sm3str+="</div></div>";
+//    							sm2.append(sm3str);//装载三级下拉菜单
+//                            }
+//						});
+//						m2str +="</table></div>";
+//						$("#m1_container").append("<div class='menu-sep'></div>");
+//						$("#m1_container").append(sm2);
+//						$('#sm'+i).splitbutton({menu:'#mm'+i});//装载一级下拉菜单
+//				});
+//				$("#m2_container").append(m2str);
+//
+//				$('#searchMenu').combobox({
+//					width:120,
+//					valueField:'menuid',
+//					textField:'menuname',
+//					data:menu3 ,
+//					onSelect:function(row){
+//						selectedM3('',row.menuurl,row.menuname);
+//					}
+//				});
+//	},'json');
+	
+	
+	//判断是否为ie
+	var userAgent1 = userAgent();
+	if(userAgent1.startWith('ie')){
+		$('#mainTabs_fullScreen').hide();
+	}
+	
+});
+
+
+
+
+
+//注销登录
+function logout(){
+	 	  $.ajax({
+				url:"/login!logout.action",
+				type:"get",
+				success:function(data){
+					location.href="/";
+				}
+			});
+}
+
+function changeBb(s) {
+	if(s=='old'){
+		document.cookie="isOld="+true;
+	}else{
+		document.cookie="isOld="+false;
+	}
+	
+	window.location.reload();
+}
+
+function loadLeftMenu(){
+     $("#m2_container").empty();
+    $.post("default!getMenu.action",
+        function(result){
+            var m2str ='';
+            var menu1 = [];
+            var menu2 = [];
+            var menu3 = [];
+            $.each(result,function(i,item){
+                if(item.menulevel =='1' ){//填充一级菜单
+                    menu1.push(item);return true;
+                }
+                if(item.menulevel =='2' ){//填充二级菜单
+                    menu2.push(item);return true;
+                }
+                if(item.menulevel =='3' ){//填充三级菜单
+                    menu3.push(item);return true;
+                }
+            });
+            $.each(menu1,function(i,item){//填充一级菜单
+                //构建一级菜单,同时符合下拉菜单要求
+                $("#m1_container").prepend("<a href='javascript:void(0)' id='sm"+i+"'  onclick=selectedM1('"+item.menuid+"','"+item.menuname+"')>"+item.menuname+"</a>");
+                var isdisplay = (item.menuid == '0')?'block':'none';//设定默认显示一级菜单id
+                m2str += "<div id='"+item.menuid+"' style='display:"+isdisplay+";'><table style='border-collapse:collapse; width:100%'>";//构建左菜单
+                var sm2 = $("<div id='mm"+i+"' style='width:150px;'></div>");//构建下拉菜单
+                $.each(menu2,function(j,item2){//遍历取出二级菜单
+                    if(item2.parentid == item.menuid){
+                        //二级左菜单字符串
+                        m2str += "<tr><td class='c2' onClick=selectedM2('"+item2.menuid+"')><i class='fa fa-list' aria-hidden='true'></i>&nbsp;"+item2.menuname+"</td></tr><tr><td style=''><div id='"+item2.menuid+"' class='m2' style='display:"+isdisplay+";'><table>";
+                        sm2.append("<div class='menu-sep'></div>");//加入二级下拉菜单
+                        var sm3str = "<div><span>"+item2.menuname+"</span><div style='width:150px;'>";//构建三级下拉字符串
+                        $.each(menu3, function(k,item3){//遍历取出三级菜单
+                            if(item3.parentid == item2.menuid){
+                                m2str +="<tr align='left' width='100%'><td class='c3' onClick=selectedM3(this,'"+item3.menuurl+"','"+item3.menuname+"') ><i class='fa fa-"+item3.menupic+"' aria-hidden='true'></i>"+item3.menuname+"</td></tr>";//三级左菜单字符串
+                                sm3str +="<div icon='icon-undo' onClick=selectedM3('','"+item3.menuurl+"','"+item3.menuname+"')>"+item3.menuname+"</div>";//三级下拉菜单字符串
+                            }//取出三级菜单
+                        })
+                        m2str +="</table></div></td></tr>";
+                        sm3str+="</div></div>";
+                        sm2.append(sm3str);//装载三级下拉菜单
+                    }
+                });
+                m2str +="</table></div>";
+                $("#m1_container").append("<div class='menu-sep'></div>");
+                $("#m1_container").append(sm2);
+                $('#sm'+i).splitbutton({menu:'#mm'+i});//装载一级下拉菜单
+            });
+            $("#m2_container").append(m2str);
+            $('#searchMenu').combobox({
+                width:120,
+                valueField:'menuid',
+                textField:'menuname',
+                data:menu3 ,
+                onSelect:function(row){
+                    selectedM3('',row.menuurl,row.menuname);
+                }
+            });
+        },'json');
+}
+
+
+</script>
+</html>

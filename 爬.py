@@ -19,6 +19,11 @@ def login(account, base64_pwd, code, cookie):
     content = response.text
     with open('教务系统.html', 'w', encoding='utf-8') as fp:
         fp.write(content)
+    massage_url = 'http://jwgl.thxy.cn/login!welcome.action'
+    response = requests.get(massage_url, headers=headers)
+    content = response.text
+    with open('广州理工学院.html', 'w', encoding='utf-8') as wp:
+        wp.write(content)
 
 
 # 动态cookie获取
@@ -132,6 +137,10 @@ def chaojiying():
         print(code)
         return code
         # print chaojiying.PostPic(base64_str, 1902)  #此处为传入 base64代码
+
+
+# 爬课表
+def Curriculum():
 
 # 主入口
 if __name__ == '__main__':
