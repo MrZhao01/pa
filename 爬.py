@@ -142,10 +142,10 @@ def chaojiying():
 
 
 # 爬课表
-def Curriculum(content):
-    soup = BeautifulSoup(content,'lxml')
-    m_class = soup.select('tbody[id = "list"] src')
-    print(m_class)
+# def Curriculum(content):
+#     soup = BeautifulSoup(content,'lxml')
+#     m_class = soup.select('tbody[id = "list"] src')
+#     print(m_class)
 
 # 主入口
 if __name__ == '__main__':
@@ -154,4 +154,4 @@ if __name__ == '__main__':
     page_code(cookie)
     code = chaojiying()
     content = login(account, base64_pwd, code, cookie)
-    Curriculum(content)
+    # Curriculum(content)
