@@ -1,6 +1,7 @@
 import base64
 import requests
 from selenium import webdriver
+from bs4 import BeautifulSoup
 
 
 # 登录后台
@@ -64,9 +65,10 @@ def page_code(cookie):
         'd': time
     }
     request = requests.get(url, params=data, headers=headers)
-    content = request.content
+    content1 = request.content
     with open('验证码.jpg', 'wb') as fp:
-        fp.write(content)
+        fp.write(content1)
+    return content1
 
 
 # 超级鹰打码平台
@@ -140,7 +142,10 @@ def chaojiying():
 
 
 # 爬课表
-def Curriculum():
+def Curriculum(content):
+    soup = BeautifulSoup(content,'lxml')
+    m_class = soup.select('tbody[id = "list"] src')
+    print(m_class)
 
 # 主入口
 if __name__ == '__main__':
@@ -148,4 +153,5 @@ if __name__ == '__main__':
     cookie = getCookie()
     page_code(cookie)
     code = chaojiying()
-    login(account, base64_pwd, code, cookie)
+    content = login(account, base64_pwd, code, cookie)
+    Curriculum(content)
